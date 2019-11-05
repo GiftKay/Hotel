@@ -5,7 +5,7 @@ class Logic
     public function db_context()
     {
         $host = 'localhost';
-        $dbName = 'hotel_db1';
+        $dbName = 'hotel_db';
         $user = 'root';
         $password = '';
         $pdo = new PDO("mysql:host=$host;", $user, $password);
@@ -34,6 +34,7 @@ class Logic
             description VARCHAR(255) NOT NULL,
             price DECIMAL NOT NULL,
             room_type VARCHAR(255) NOT NULL,
+            image_url VARCHAR(255) NOT NULL,
             branch_id INT NOT NULL,
             FOREIGN KEY(branch_id) REFERENCES branches(branch_id)
         )");
@@ -63,9 +64,9 @@ class Logic
         ");
 
         $r = $pdo->exec("INSERT INTO rooms VALUES
-            (1,30,'Comes with air conditioning, Flat Screen TV, Pool',1349.99,'Single Room',1),
-            (2,25,'Comes with air conditioning, Flat Screen TV, Pool, jacoozy, city view',2500,'Double Room',3),
-            (3,15,'Comes with air conditioning, Flat Screen TV, Pool, jacoozy, ocean view, city view',10500,'Family Room',2)
+            (1,30,'Comes with air conditioning, Flat Screen TV, Pool',1349.99,'Single Room','../images/1.jpg',1),
+            (2,25,'Comes with air conditioning, Flat Screen TV, Pool, jacoozy, city view',2500,'Double Room','../images/2.jpg',3),
+            (3,15,'Comes with air conditioning, Flat Screen TV, Pool, jacoozy, ocean view, city view',10500,'Family Room','../images/3.jpg',2)
         ");
 
         if(!$b || !$r)
@@ -95,6 +96,40 @@ class Logic
         $data = $pdo->query("SELECT * FROM branches");
         return $data;
     }
+    public function search_rooms($branch_id, $room_type)
+    {
+        $pdo = $this->db_context();
+        $data = $pdo->query("SELECT * FROM rooms WHERE branch_id=$branch_id OR room_type='$room_type'");
+        // echo "SELECT * FROM rooms WHERE branch_id=$branch_id OR room_type='$room_type'";
+        // die();
+        return $data;
+    }
+
+    public function error_handler($msg)
+    {
+        session_start();
+        $_SESSION['error_message'] = $msg;
+        header("Location: /hotel/views/error.php");
+    }
+
+    public function get_room($room_id)
+    {
+        $pdo = $this->db_context();
+        $room = $pdo->query("SELECT * FROM rooms WHERE room_id=$room_id")->fetchObject('Room');
+        return $room;
+
+    }
+}
+
+class Room
+{
+    public $room_id;
+    public $room_quantity;
+    public $description;
+    public $price;
+    public $room_type;
+    public $image_url;
+    public $branch_id;
 }
 
 ?>

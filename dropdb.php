@@ -4,7 +4,7 @@
     try{
         $logic = new Logic();
         $pdo = $logic->db_context();
-        $pdo->exec('DROP DATABASE hoteldb');
+        $pdo->exec('DROP DATABASE hotel_db');
     }
     catch(PDOException $e){
         session_start();
