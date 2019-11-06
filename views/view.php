@@ -5,6 +5,11 @@
     {
         $id = $_GET['id'];
         $room=$logic->get_room($id);
+
+        session_start();
+        $date_in= $_SESSION['date_in'];
+        $date_out= $_SESSION['date_out'];
+
         if($room == null)
         {
             $logic->error_handler("The room was not found or has been removed");
@@ -16,20 +21,23 @@
     }
 
 
-    if($_SERVER['REQUEST_METHOD'] == 'POST')
-    {
-        $firstname = $_POST['firstname'];
-        $surname = $_POST['surname'];
-        $cell = $_POST['cell'];
-        $email = $_POST['email'];
-        $checkIn = $_POST['checkIn'];
-        $checkOut = $_POST['checkOut'];
-        $breakfast = $_POST['breakfast'];
+    // if(isset($_POST["submit"]))
+    // {
+    //     $firstname = $_POST['firstname'];
+    //     $surname = $_POST['surname'];
+    //     $cell = $_POST['cell'];
+    //     $email = $_POST['email'];
+    //     $checkIn = $_POST['checkIn'];
+    //     $checkOut = $_POST['checkOut'];
+    //     $breakfast = $_POST['breakfast'];
 
-        //insert into resevations
-        session_start();
+    //     $logic->create_reservation($firstname,$surname,$cell,$email,$checkIn,$checkOut,$breakfast);
         
-    }
+    // }
+    // else
+    // {
+    //     $logic->error_handler("Reservation Failed");
+    // }
 ?>
 <!DOCTYPE html>
 <html>
@@ -117,7 +125,7 @@
                             <div class="col-12">
                                 <div class="col-12">
                                     <label for="checkIn">Check In</label>
-                                    <input type="text" name="checkIn" id="checkIn" class="form-control" readonly/>
+                                    <input type="text" name="checkIn" id="checkIn" class="form-control" value="<?=$date_in?>" readonly/>
                                     <p class="error text-danger" style="display:none"></p>
                                 </div>
                             </div>
@@ -127,7 +135,7 @@
                             <div class="col-12">
                                 <div class="col-12">
                                     <label for="checkOut">Check Out</label>
-                                    <input type="text" name="checkOut" id="checkOut" class="form-control" readonly/>
+                                    <input type="text" name="checkOut" id="checkOut" value="<?=$date_out?>" class="form-control" readonly/>
                                     <p class="error text-danger" style="display:none"></p>
                                 </div>
                             </div>

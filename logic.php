@@ -107,7 +107,6 @@ class Logic
 
     public function error_handler($msg)
     {
-        session_start();
         $_SESSION['error_message'] = $msg;
         header("Location: /hotel/views/error.php");
     }
@@ -118,6 +117,14 @@ class Logic
         $room = $pdo->query("SELECT * FROM rooms WHERE room_id=$room_id")->fetchObject('Room');
         return $room;
 
+    }
+
+    public function create_reservation($firstname,$surname,$cell,$email,$checkIn,$checkOut,$breakfast)
+    {
+        $pdo = $this->db_context();
+        $b = $pdo->exec("INSERT INTO reservations VALUES
+            ('$firstname','$surname','$cell','$email','$checkIn','$checkOut',$breakfast)
+        ");
     }
 }
 
